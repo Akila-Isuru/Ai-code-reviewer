@@ -7,7 +7,7 @@ export async function POST(req: Request) {
 
     if (!apiKey) {
       return NextResponse.json(
-        { error: "GEMINI_API_KEY is missing in Vercel Environment Variables!" },
+        { error: "GEMINI_API_KEY is missing in Environment Variables!" },
         { status: 500 },
       );
     }
@@ -29,17 +29,17 @@ Review the following ${language || "javascript"} code and provide professional f
 You MUST respond ONLY with a valid JSON object matching this exact schema (do not include markdown code blocks like \`\`\`json, just return the raw JSON):
 {
   "score": 85,
-  "summary": "Sample summary text",
-  "securityIssues": ["issue 1"],
-  "performanceIssues": ["issue 1"],
-  "refactoredCode": "sample code"
+  "summary": "Concise code review summary",
+  "securityIssues": ["Issue description if any"],
+  "performanceIssues": ["Issue description if any"],
+  "refactoredCode": "Clean refactored code here"
 }
 
 Code to analyze:
 ${code}`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.5-flash",
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -55,7 +55,6 @@ ${code}`;
     return NextResponse.json(jsonResponse);
   } catch (error: any) {
     console.error("Gemini Review Error:", error);
-
     return NextResponse.json(
       { error: error?.message || "Failed to generate code review." },
       { status: 500 },
