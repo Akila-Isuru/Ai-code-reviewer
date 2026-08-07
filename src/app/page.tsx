@@ -4,8 +4,16 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import CodeEditor from "../components/CodeEditor";
 import FeedbackCard from "../components/FeedbackCard";
-import { ReviewResult } from "../types";
-import { Play, Loader2, Sparkles, ShieldAlert, Zap, Cpu } from "lucide-react";
+import DiffModal from "../components/DiffModal";
+type ReviewResult = {
+  refactoredCode: string;
+  summary?: string;
+  issues?: Array<{ title?: string; detail?: string }>;
+  score?: number;
+  securityIssues?: Array<{ title?: string; detail?: string }>;
+  performanceIssues?: Array<{ title?: string; detail?: string }>;
+};
+import { Play, Loader2, Sparkles, Cpu } from "lucide-react";
 
 export default function Home() {
   const [code, setCode] = useState<string>(
@@ -16,6 +24,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [review, setReview] = useState<ReviewResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isDiffOpen, setIsDiffOpen] = useState<boolean>(false);
 
   const handleReview = async () => {
     if (!code.trim()) return;
@@ -69,9 +78,15 @@ export default function Home() {
               onChange={(e) => setMode(e.target.value)}
               className="rounded-lg border border-gray-700 bg-gray-950 px-3 py-1.5 text-xs font-medium text-gray-200 outline-none transition focus:border-blue-500"
             >
-              <option value="general">Senior Architect (Comprehensive)</option>
-              <option value="security">Security Auditor (OWASP Strict)</option>
-              <option value="performance">Performance & Big-O Optimizer</option>
+              <option value="general">
+                👔 Senior Architect (Comprehensive)
+              </option>
+              <option value="security">
+                🛡️ Security Auditor (OWASP Strict)
+              </option>
+              <option value="performance">
+                ⚡ Performance & Big-O Optimizer
+              </option>
             </select>
           </div>
 
@@ -106,6 +121,7 @@ export default function Home() {
             <FeedbackCard
               review={review}
               onApplyRefactor={(newCode) => setCode(newCode)}
+              onOpenDiff={() => setIsDiffOpen(true)}
             />
           ) : (
             <div className="flex h-full flex-col items-center justify-center rounded-xl border border-gray-800 bg-gray-900 p-6 text-center text-gray-500">
@@ -121,6 +137,18 @@ export default function Home() {
           )}
         </div>
       </main>
+
+      {/* Side-by-Side Diff Modal */}
+      {review && (
+        <DiffModal
+          isOpen={isDiffOpen}
+          onClose={() => setIsDiffOpen(false)}
+          originalCode={code}
+          refactoredCode={review.refactoredCode}
+          language={language}
+          onApply={() => setCode(review.refactoredCode)}
+        />
+      )}
     </div>
   );
 }
