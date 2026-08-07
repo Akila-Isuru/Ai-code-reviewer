@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { code, language } = body;
+    const { code, language, mode = "general" } = body;
 
     if (!code) {
       return NextResponse.json(
@@ -21,22 +21,32 @@ export async function POST(req: Request) {
       );
     }
 
-    const prompt = `You are an expert Senior Software Engineer and Technical Interviewer.
-Review the following ${language || "javascript"} code and provide professional feedback.
+    let personaInstruction =
+      "You are an expert Senior Software Engineer and Technical Interviewer providing a balanced, comprehensive review.";
+
+    if (mode === "security") {
+      personaInstruction =
+        "You are an elite Cyber Security Auditor & OWASP Security Specialist. Focus heavily on identifying security vulnerabilities, injection risks, data leaks, and insecure patterns. Be extremely strict on security.";
+    } else if (mode === "performance") {
+      personaInstruction =
+        "You are a Performance & Big-O Optimization Specialist. Focus heavily on algorithmic complexity, time/space complexity, memory leaks, loop optimizations, and execution speed.";
+    }
+
+    const prompt = `${personaInstruction}
+Review the following ${language || "javascript"} code and provide structured professional feedback.
 
 You MUST respond ONLY with a valid raw JSON object matching this exact schema (do not include markdown code blocks like \`\`\`json, just return the raw JSON):
 {
   "score": 85,
-  "summary": "Concise code review summary",
+  "summary": "Concise code review summary tailored to the ${mode} perspective",
   "securityIssues": ["Security issue description or 'No security issues detected'"],
   "performanceIssues": ["Performance tip description or 'No performance bottlenecks found'"],
-  "refactoredCode": "Clean refactored version of the code"
+  "refactoredCode": "Clean refactored version of the code optimized for ${mode}"
 }
 
 Code to analyze:
 ${code}`;
 
-    // Call Groq API (OpenAI Compatible Endpoint)
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
