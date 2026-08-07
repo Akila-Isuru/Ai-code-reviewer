@@ -69,6 +69,8 @@ export default function DiffModal({
               fontSize: 13,
               scrollBeyondLastLine: false,
               renderSideBySide: true,
+              wordWrap: "on",
+              wrappingStrategy: "advanced",
             }}
           />
         </div>

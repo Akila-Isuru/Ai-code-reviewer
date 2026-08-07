@@ -76,6 +76,11 @@ You MUST respond ONLY with a valid raw JSON object matching this exact schema (n
   "refactoredCode": "Refactored code built strictly according to your assigned persona focus"
 }
 
+CRITICAL FORMATTING RULES FOR "refactoredCode":
+1. NEVER output minified or single-line code.
+2. MUST maintain clean, human-readable, multi-line code formatting with proper line breaks (\\n) and standard indentation.
+3. Keep the same structure and spacing as professionally formatted source code.
+
 Code to analyze (${language || "javascript"}):
 ${code}`;
 

@@ -137,7 +137,7 @@ export default function FeedbackCard({
               </button>
             </div>
           </div>
-          <pre className="overflow-x-auto rounded-lg border border-gray-800 bg-gray-950 p-3.5 font-mono text-xs text-emerald-400 leading-relaxed">
+          <pre className="overflow-x-auto rounded-lg border border-gray-800 bg-gray-950 p-3.5 font-mono text-xs text-emerald-400 leading-relaxed whitespace-pre-wrap">
             <code>{review.refactoredCode}</code>
           </pre>
         </div>

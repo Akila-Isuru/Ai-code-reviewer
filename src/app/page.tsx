@@ -71,15 +71,9 @@ export default function Home() {
               onChange={(e) => setMode(e.target.value)}
               className="rounded-lg border border-gray-700 bg-gray-950 px-3 py-1.5 text-xs font-medium text-gray-200 outline-none transition focus:border-blue-500"
             >
-              <option value="general">
-                👔 Senior Architect (Comprehensive)
-              </option>
-              <option value="security">
-                🛡️ Security Auditor (OWASP Strict)
-              </option>
-              <option value="performance">
-                ⚡ Performance & Big-O Optimizer
-              </option>
+              <option value="general">Senior Architect (Comprehensive)</option>
+              <option value="security">Security Auditor (OWASP Strict)</option>
+              <option value="performance">Performance & Big-O Optimizer</option>
             </select>
           </div>
 
