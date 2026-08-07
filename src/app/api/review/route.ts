@@ -21,30 +21,62 @@ export async function POST(req: Request) {
       );
     }
 
-    let personaInstruction =
-      "You are an expert Senior Software Engineer and Technical Interviewer providing a balanced, comprehensive review.";
+    let systemRole = "";
+    let promptInstructions = "";
 
+    // 1. Security Persona
     if (mode === "security") {
-      personaInstruction =
-        "You are an elite Cyber Security Auditor & OWASP Security Specialist. Focus heavily on identifying security vulnerabilities, injection risks, data leaks, and insecure patterns. Be extremely strict on security.";
-    } else if (mode === "performance") {
-      personaInstruction =
-        "You are a Performance & Big-O Optimization Specialist. Focus heavily on algorithmic complexity, time/space complexity, memory leaks, loop optimizations, and execution speed.";
+      systemRole =
+        "You are a ruthless Chief Information Security Officer (CISO) and OWASP Cyber Security Auditor.";
+      promptInstructions = `
+Analyze the code STRICTLY from a CYBER SECURITY & THREAT MODELING perspective. Ignore general code style unless it impacts security.
+
+You MUST follow these strict guidelines for your JSON fields:
+- summary: Focus exclusively on security posture, attack surfaces, OWASP Top 10 risks, and data sanitization. Mention specific vulnerability names (e.g., SQL Injection, XSS, RCE, IDOR).
+- securityIssues: List detailed security vulnerabilities, potential exploits, and threat risks.
+- performanceIssues: ["N/A - Security Audit Mode active. Focused purely on threat prevention and security hardening."].
+- refactoredCode: Refactor the code solely to prioritize security hardening, parameterized queries, input sanitization, and defensive programming.
+`;
+    }
+    // 2. Performance Persona
+    else if (mode === "performance") {
+      systemRole =
+        "You are a Principal Performance Engineer specializing in High-Frequency Trading systems, Big-O Complexity, and Memory Optimization.";
+      promptInstructions = `
+Analyze the code STRICTLY from an ALGORITHMIC PERFORMANCE & BIG-O COMPLEXITY perspective. Ignore security unless it impacts CPU execution speed.
+
+You MUST follow these strict guidelines for your JSON fields:
+- summary: Must explicitly state the current Big-O Time Complexity (e.g., O(N^2)) and Space Complexity, explaining CPU cycles and memory overhead bottlenecks.
+- securityIssues: ["N/A - Performance & Big-O Mode active. Focused purely on execution speed and memory footprint."].
+- performanceIssues: List specific loop inefficiencies, cache misses, array lookup overheads, and memory leaks (e.g., replacing Array.indexOf with Set/Map).
+- refactoredCode: Refactor the code solely to achieve optimal Big-O execution speed (e.g., converting O(N^2) to O(N)) and minimal memory footprint.
+`;
+    }
+    // 3. Senior Architect Persona (Default)
+    else {
+      systemRole =
+        "You are a Principal Software Architect focused on Clean Code, SOLID principles, and System Design.";
+      promptInstructions = `
+Provide a balanced, high-level software engineering critique focusing on Code Architecture, Maintainability, Readable Syntax, and Best Practices.
+- summary: Evaluate overall code quality, modularity, readability, and modern language paradigms (e.g., async/await, ES6+ features).
+- securityIssues: Highlight critical security risks if present.
+- performanceIssues: Highlight obvious performance bottlenecks if present.
+- refactoredCode: Rewrite for clean code architecture, elegant error handling, and maximum developer readability.
+`;
     }
 
-    const prompt = `${personaInstruction}
-Review the following ${language || "javascript"} code and provide structured professional feedback.
+    const prompt = `${promptInstructions}
 
-You MUST respond ONLY with a valid raw JSON object matching this exact schema (do not include markdown code blocks like \`\`\`json, just return the raw JSON):
+You MUST respond ONLY with a valid raw JSON object matching this exact schema (no markdown formatting, just pure JSON):
 {
   "score": 85,
-  "summary": "Concise code review summary tailored to the ${mode} perspective",
-  "securityIssues": ["Security issue description or 'No security issues detected'"],
-  "performanceIssues": ["Performance tip description or 'No performance bottlenecks found'"],
-  "refactoredCode": "Clean refactored version of the code optimized for ${mode}"
+  "summary": "Detailed summary tailored STRICTLY to your assigned persona perspective",
+  "securityIssues": ["Specific security issue items"],
+  "performanceIssues": ["Specific performance issue items"],
+  "refactoredCode": "Refactored code built strictly according to your assigned persona focus"
 }
 
-Code to analyze:
+Code to analyze (${language || "javascript"}):
 ${code}`;
 
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -58,8 +90,7 @@ ${code}`;
         messages: [
           {
             role: "system",
-            content:
-              "You are a helpful code review assistant that always responds strictly in raw valid JSON format.",
+            content: systemRole,
           },
           {
             role: "user",
@@ -67,7 +98,7 @@ ${code}`;
           },
         ],
         response_format: { type: "json_object" },
-        temperature: 0.2,
+        temperature: 0.3,
       }),
     });
 
