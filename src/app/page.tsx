@@ -5,14 +5,7 @@ import Navbar from "../components/Navbar";
 import CodeEditor from "../components/CodeEditor";
 import FeedbackCard from "../components/FeedbackCard";
 import DiffModal from "../components/DiffModal";
-type ReviewResult = {
-  refactoredCode: string;
-  summary?: string;
-  issues?: Array<{ title?: string; detail?: string }>;
-  score?: number;
-  securityIssues?: Array<{ title?: string; detail?: string }>;
-  performanceIssues?: Array<{ title?: string; detail?: string }>;
-};
+import { ReviewResult } from "../types";
 import { Play, Loader2, Sparkles, Cpu } from "lucide-react";
 
 export default function Home() {
