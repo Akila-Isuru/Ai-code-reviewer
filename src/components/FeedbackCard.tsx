@@ -44,12 +44,12 @@ export default function FeedbackCard({
 
 ---
 
-##  Summary
+## Summary
 ${review.summary}
 
 ---
 
-##  Security Vulnerabilities
+## Security Vulnerabilities
 ${
   review.securityIssues && review.securityIssues.length > 0
     ? review.securityIssues.map((issue) => `- ${issue}`).join("\n")
@@ -58,7 +58,7 @@ ${
 
 ---
 
-## ⚡ Performance & Best Practices
+##  Performance & Best Practices
 ${
   review.performanceIssues && review.performanceIssues.length > 0
     ? review.performanceIssues.map((issue) => `- ${issue}`).join("\n")
@@ -67,7 +67,7 @@ ${
 
 ---
 
-## Refactored Code Recommendation
+##  Refactored Code Recommendation
 \`\`\`javascript
 ${review.refactoredCode || "// No refactored code provided"}
 \`\`\`
@@ -108,7 +108,7 @@ ${review.refactoredCode || "// No refactored code provided"}
   };
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto rounded-xl border border-gray-800 bg-gray-900 p-6 space-y-6 print:bg-white print:text-black print:border-none print:shadow-none">
+    <div className="flex h-full flex-col overflow-y-auto rounded-xl border border-gray-800 bg-gray-900 p-6 space-y-6 print:bg-white print:text-black print:border-none print:shadow-none print:overflow-visible print:h-auto print:block">
       {/* Score Header */}
       <div className="flex items-center justify-between border-b border-gray-800 pb-4 shrink-0 print:border-gray-300">
         <div>
@@ -176,7 +176,7 @@ ${review.refactoredCode || "// No refactored code provided"}
       </div>
 
       {/* Summary */}
-      <div>
+      <div className="print:break-inside-avoid">
         <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-300 print:text-black">
           <CheckCircle2 className="h-4 w-4 text-blue-400 shrink-0 print:hidden" />{" "}
           Summary
@@ -187,7 +187,7 @@ ${review.refactoredCode || "// No refactored code provided"}
       </div>
 
       {/* Security Issues */}
-      <div>
+      <div className="print:break-inside-avoid">
         <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-300 print:text-black">
           <ShieldAlert className="h-4 w-4 text-red-400 shrink-0 print:hidden" />{" "}
           Security Vulnerabilities
@@ -212,7 +212,7 @@ ${review.refactoredCode || "// No refactored code provided"}
       </div>
 
       {/* Performance Issues */}
-      <div>
+      <div className="print:break-inside-avoid">
         <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-300 print:text-black">
           <Zap className="h-4 w-4 text-yellow-400 shrink-0 print:hidden" />{" "}
           Performance & Best Practices
@@ -238,7 +238,7 @@ ${review.refactoredCode || "// No refactored code provided"}
 
       {/* Refactored Code */}
       {review.refactoredCode && (
-        <div className="flex flex-col">
+        <div className="flex flex-col print:break-inside-avoid">
           <div className="mb-2 flex items-center justify-between gap-2 flex-wrap">
             <h3 className="text-sm font-semibold text-gray-300 print:text-black">
               Refactored Code
@@ -260,8 +260,8 @@ ${review.refactoredCode || "// No refactored code provided"}
               </button>
             </div>
           </div>
-          <pre className="overflow-x-auto rounded-lg border border-gray-800 bg-gray-950 p-3.5 font-mono text-xs text-emerald-400 leading-relaxed whitespace-pre-wrap print:border-gray-300 print:bg-gray-100 print:text-gray-900">
-            <code>{review.refactoredCode}</code>
+          <pre className="overflow-x-auto rounded-lg border border-gray-800 bg-gray-950 p-3.5 font-mono text-xs text-emerald-400 leading-relaxed whitespace-pre-wrap print:border-gray-300 print:bg-gray-100 print:text-black print:overflow-visible">
+            <code className="print:text-black">{review.refactoredCode}</code>
           </pre>
         </div>
       )}
