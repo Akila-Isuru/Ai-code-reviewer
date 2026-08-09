@@ -1,5 +1,5 @@
-import React from 'react';
-import { Code2, Sparkles } from 'lucide-react';
+import React from "react";
+import { Code2, Sparkles } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -11,12 +11,11 @@ export default function Navbar() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-white">AI Code Reviewer</h1>
-            <p className="text-xs text-gray-400">Powered by Gemini 1.5 Flash</p>
+            <p className="text-xs text-gray-400">Powered by Llama-3.3-70B</p>
           </div>
         </div>
         <div className="flex items-center space-x-2 rounded-full border border-gray-800 bg-gray-900 px-3 py-1 text-xs text-gray-300">
           <Sparkles className="h-3.5 w-3.5 text-yellow-400" />
-          <span>Ready for Interview Demo</span>
         </div>
       </div>
     </header>
