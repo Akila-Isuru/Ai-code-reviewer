@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Code Reviewer
+
+An enterprise-grade, multi-persona AI code review platform built with Next.js, TypeScript, Tailwind CSS, and Monaco Editor. It leverages Groq's Llama 3.3 70B model to provide lightning-fast, highly accurate code analysis tailored for software architecture, cybersecurity auditing, and performance optimization.
+
+---
+
+## Features
+
+- **Multi-Persona AI Review Engine**: Toggle between three specialized critique modes:
+  - **Senior Architect**: Focuses on clean code, SOLID principles, modularity, and modern syntax patterns.
+  - **Security Auditor**: Operates from a strict OWASP and threat-modeling perspective to identify vulnerabilities and sanitize data.
+  - **Performance Optimizer**: Analyzes code through a Big-O complexity and memory-overhead lens.
+- **Interactive Code Editor & Diff Viewer**: Integrated Monaco Editor with real-time syntax highlighting across multiple programming languages, accompanied by a side-by-side diff comparison tool.
+- **Export & Reporting**: Generate structured markdown reports, download `.md` files directly, or export formatted documentation for team reviews.
+- **Responsive UI**: Dark-themed developer interface optimized for modern desktop and tablet workflows.
+
+---
+
+## Tech Stack
+
+- **Framework**: Next.js (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS, Lucide Icons
+- **Code Editor**: Monaco Editor (`@monaco-editor/react`)
+- **AI Inference**: Groq API (`llama-3.3-70b-versatile`)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
+Ensure you have the following installed on your local machine:
+- Node.js (v18 or higher)
+- npm, yarn, pnpm, or bun
+
+### Installation & Setup
+
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/your-username/ai-code-reviewer.git](https://github.com/your-username/ai-code-reviewer.git)
+   cd ai-code-reviewer
+
+
+  Install dependencies:
+
+Bash
+npm install
+Create a .env.local file in the root directory and add your Groq API key:
+
+Code snippet
+GROQ_API_KEY=your_groq_api_key_here
+Run the development server:
+
+Bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open http://localhost:3000 in your browser to use the application.
